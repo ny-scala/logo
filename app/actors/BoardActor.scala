@@ -18,8 +18,18 @@ class BoardActor extends Actor with ActorLogging {
 
   def receive = LoggingReceive {
 
-    case Move(uid, turtle) => {
-      turtles = turtles.updated(uid, turtle)
+    case Move(uid, dir) => {
+      val turtle = turtles.getOrElse(uid, Turtle(1, 1, Integer.toString(uid, 36).last))
+      val newTurtle = dir match {
+        case "u" => turtle.up(board)
+        case "d" => turtle.down(board)
+        case "r" => turtle.right(board)
+        case "l" => turtle.left(board)
+      }
+      log.info(turtles.values.toString())
+      log.info(newTurtle.toString)
+      turtles = turtles.updated(uid, newTurtle)
+      log.info(turtles.values.toString())
       val boardString = board.pretty(turtles.values)
       users map { user => user ! Field(boardString) }
     }

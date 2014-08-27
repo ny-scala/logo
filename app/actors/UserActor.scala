@@ -11,11 +11,9 @@ import scala.xml.Utility
 import play.api.libs.json._
 import logo._
 
-case class Move(uid: Int, turtle: Turtle)
+case class Move(uid: Int, dir: String)
 
 class UserActor(uid: Int, board: ActorRef, out: ActorRef) extends Actor with ActorLogging {
-
-  var turtle = Turtle(1, 1, Integer.toString(uid, 36).last)
 
   override def preStart() = {
     BoardActor() ! Subscribe
@@ -41,15 +39,7 @@ class UserActor(uid: Int, board: ActorRef, out: ActorRef) extends Actor with Act
 
     case js: JsValue if isValidLogoCommand((js \ "move")) => {
       // Move this turtle
-      (js \ "move") match {
-        case JsString("u") => turtle = turtle.up
-        case JsString("d") => turtle = turtle.down
-        case JsString("r") => turtle = turtle.right
-        case JsString("l") => turtle = turtle.left
-      }
-
-      board ! Move(uid, turtle)
-
+      board ! Move(uid, (js \ "move").as[String])
     }
 
     case js: JsValue => {

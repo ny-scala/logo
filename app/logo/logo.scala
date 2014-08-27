@@ -1,10 +1,10 @@
 package logo
 
 case class Turtle(x: Int, y: Int, id: Char) {
-  def up: Turtle    = copy(y=y-1)
-  def down: Turtle  = copy(y=y+1)
-  def left: Turtle  = copy(x=x-1)
-  def right: Turtle = copy(x=x+1)
+  def up   (board: Board): Turtle = if ((y-1) < 1           ) copy(y=board.height) else copy(y=y-1)
+  def down (board: Board): Turtle = if ((y+1) > board.height) copy(y=1           ) else copy(y=y+1)
+  def left (board: Board): Turtle = if ((x-1) < 1           ) copy(x=board.width ) else copy(x=x-1)
+  def right(board: Board): Turtle = if ((x+1) > board.width ) copy(x=1           ) else copy(x=x+1)
   def occupies(xp: Int, yp: Int) = x == xp && y == yp
 }
 
