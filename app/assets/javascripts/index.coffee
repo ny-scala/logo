@@ -15,6 +15,14 @@ $ ->
     console.log(JSON.stringify({move: event.target.id}))
     ws.send(JSON.stringify({move: event.target.id}))
 
+  $(document).keydown (event) ->
+    console.log(event.which)
+    switch event.which
+      when 37 then ws.send(JSON.stringify({move: "l"}))
+      when 38 then ws.send(JSON.stringify({move: "u"}))
+      when 39 then ws.send(JSON.stringify({move: "r"}))
+      when 40 then ws.send(JSON.stringify({move: "d"}))
+
   $("#msgform").submit (event) ->
     event.preventDefault()
     console.log($("#msgtext").val())
