@@ -2,7 +2,7 @@ package logo
 
 case class Turtle(x: Int, y: Int, id: Char) {
   def up: Turtle    = copy(y=y-1)
-  def down: Turtle  = copy(y=y+2)
+  def down: Turtle  = copy(y=y+1)
   def left: Turtle  = copy(x=x-1)
   def right: Turtle = copy(x=x+1)
   def occupies(xp: Int, yp: Int) = x == xp && y == yp
