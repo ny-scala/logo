@@ -22,13 +22,20 @@ class UserActor(uid: Int, board: ActorRef, out: ActorRef) extends Actor with Act
   }
 
   private def isValidLogoCommand(msg: JsValue): Boolean = {
-    true // TODO
+    msg match {
+      case JsString("u"|"d"|"r"|"l") => true
+      case _ => false
+    }
   }
 
   def receive = LoggingReceive {
+    case Field(fieldString) if sender == board => {
+      val js = Json.obj("type" -> "field", "msg" -> fieldString)
+      out ! js
+    }
+
     case Message(muid, s) if sender == board => {
-      // val js = Json.obj("type" -> "message", "uid" -> muid, "msg" -> s)
-      val js = Json.obj("type" -> "field", "uid" -> muid, "msg" -> s)
+      val js = Json.obj("type" -> "message", "uid" -> muid, "msg" -> s)
       out ! js
     }
 
@@ -42,7 +49,6 @@ class UserActor(uid: Int, board: ActorRef, out: ActorRef) extends Actor with Act
       }
 
       board ! Move(uid, turtle)
-      (js \ "move").validate[String] map { Utility.escape(_) }  map { board ! Message(uid, _ ) }
 
     }
 

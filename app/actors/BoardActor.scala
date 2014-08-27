@@ -20,15 +20,11 @@ class BoardActor extends Actor with ActorLogging {
 
     case Move(uid, turtle) => {
       turtles = turtles.updated(uid, turtle)
-      // turtles = turtles.updated(1, turtle.copy(id = 'X'))
       val boardString = board.pretty(turtles.values)
-      users map { user => user ! Message(0, boardString) }
+      users map { user => user ! Field(boardString) }
     }
 
-    case m: Message => {
-      //do nothing
-      //users map { _ ! m}
-    }
+    case m: Message => users map { _ ! m}
 
     case Subscribe => {
       users += sender
@@ -45,4 +41,5 @@ object BoardActor {
 }
 
 case class Message(uuid: Int, s: String)
+case class Field(s: String)
 object Subscribe
