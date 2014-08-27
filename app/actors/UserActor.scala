@@ -15,7 +15,7 @@ case class Move(uid: Int, turtle: Turtle)
 
 class UserActor(uid: Int, board: ActorRef, out: ActorRef) extends Actor with ActorLogging {
 
-  var turtle = Turtle(1, 1, uid.toString.head)
+  var turtle = Turtle(1, 1, Integer.toString(uid, 36).last)
 
   override def preStart() = {
     BoardActor() ! Subscribe
