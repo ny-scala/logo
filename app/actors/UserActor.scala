@@ -27,7 +27,8 @@ class UserActor(uid: Int, board: ActorRef, out: ActorRef) extends Actor with Act
 
   def receive = LoggingReceive {
     case Message(muid, s) if sender == board => {
-      val js = Json.obj("type" -> "message", "uid" -> muid, "msg" -> s)
+      // val js = Json.obj("type" -> "message", "uid" -> muid, "msg" -> s)
+      val js = Json.obj("type" -> "field", "uid" -> muid, "msg" -> s)
       out ! js
     }
 
@@ -35,12 +36,14 @@ class UserActor(uid: Int, board: ActorRef, out: ActorRef) extends Actor with Act
       // Move this turtle
       (js \ "move") match {
         case JsString("u") => turtle = turtle.up
-        // case "d" => turtle = turtle.down
-        // case "r" => turtle = turtle.right
-        // case "l" => turtle = turtle.left
+        case JsString("d") => turtle = turtle.down
+        case JsString("r") => turtle = turtle.right
+        case JsString("l") => turtle = turtle.left
       }
+
       board ! Move(uid, turtle)
       (js \ "move").validate[String] map { Utility.escape(_) }  map { board ! Message(uid, _ ) }
+
     }
 
     case js: JsValue => {

@@ -12,15 +12,23 @@ import logo._
 class BoardActor extends Actor with ActorLogging {
   var users = Set[ActorRef]()
 
+  val board = Board(10, 10)
+
   var turtles: Map[Int, Turtle] = Map.empty
 
   def receive = LoggingReceive {
 
     case Move(uid, turtle) => {
       turtles = turtles.updated(uid, turtle)
+      // turtles = turtles.updated(1, turtle.copy(id = 'X'))
+      val boardString = board.pretty(turtles.values)
+      users map { user => user ! Message(0, boardString) }
     }
 
-    case m: Message => users map { _ ! m}
+    case m: Message => {
+      //do nothing
+      //users map { _ ! m}
+    }
 
     case Subscribe => {
       users += sender
