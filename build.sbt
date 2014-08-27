@@ -1,4 +1,4 @@
-name := """Anonymous_Chat"""
+name := """Logo_Server"""
 
 version := "1.0-SNAPSHOT"
 

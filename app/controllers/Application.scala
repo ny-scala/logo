@@ -12,6 +12,8 @@ import play.api.mvc.Action
 import play.api.mvc.Controller
 import play.api.mvc.WebSocket
 
+import logo._
+
 object Application extends Controller {
   val UID = "uid"
   var counter = 0;
@@ -32,7 +34,7 @@ object Application extends Controller {
   def ws = WebSocket.tryAcceptWithActor[JsValue, JsValue] { implicit request =>
     Future.successful(request.session.get(UID) match {
       case None => Left(Forbidden)
-      case Some(uid) => Right(UserActor.props(uid))
+      case Some(uid) => Right(UserActor.props(uid.toInt))
     })
   }
 
