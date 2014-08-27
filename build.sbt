@@ -1,10 +1,10 @@
-name := """Logo_Server"""
+name := """logo"""
 
 version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.2"
 
 libraryDependencies ++= Seq(
   ws, // Play's web services module
