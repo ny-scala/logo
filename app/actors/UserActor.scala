@@ -17,6 +17,7 @@ class UserActor(uid: Int, board: ActorRef, out: ActorRef) extends Actor with Act
 
   override def preStart() = {
     BoardActor() ! Subscribe
+    BoardActor() ! Move(uid, "d") // initial move to cause an initial board state("Field") send to user
   }
 
   private def isValidLogoCommand(msg: JsValue): Boolean = {
